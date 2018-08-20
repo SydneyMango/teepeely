@@ -10,10 +10,69 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_18_051701) do
+ActiveRecord::Schema.define(version: 2018_08_20_054532) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "airports", force: :cascade do |t|
+    t.string "name"
+    t.string "airport_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "favourites", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "resort_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["resort_id"], name: "index_favourites_on_resort_id"
+    t.index ["user_id"], name: "index_favourites_on_user_id"
+  end
+
+  create_table "feature_resorts", force: :cascade do |t|
+    t.bigint "feature_id"
+    t.bigint "resort_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["feature_id"], name: "index_feature_resorts_on_feature_id"
+    t.index ["resort_id"], name: "index_feature_resorts_on_resort_id"
+  end
+
+  create_table "features", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "photos", force: :cascade do |t|
+    t.string "photo"
+    t.bigint "resort_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["resort_id"], name: "index_photos_on_resort_id"
+  end
+
+  create_table "resorts", force: :cascade do |t|
+    t.string "name"
+    t.string "photo"
+    t.string "continent"
+    t.string "country"
+    t.string "description"
+    t.string "address"
+    t.string "website"
+    t.string "contact_link"
+    t.string "booking_link"
+    t.float "latitude"
+    t.float "longitude"
+    t.bigint "user_id"
+    t.bigint "airport_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["airport_id"], name: "index_resorts_on_airport_id"
+    t.index ["user_id"], name: "index_resorts_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -27,4 +86,11 @@ ActiveRecord::Schema.define(version: 2018_08_18_051701) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "favourites", "resorts"
+  add_foreign_key "favourites", "users"
+  add_foreign_key "feature_resorts", "features"
+  add_foreign_key "feature_resorts", "resorts"
+  add_foreign_key "photos", "resorts"
+  add_foreign_key "resorts", "airports"
+  add_foreign_key "resorts", "users"
 end
