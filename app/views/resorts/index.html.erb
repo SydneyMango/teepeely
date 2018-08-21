@@ -11,7 +11,7 @@
        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
 
        <%= link_to resort_path(resort), target: :_blank do %>
-       <div class="card-resort" class="resort" style="background-image: url(<%= image_path resort.image %>);">
+       <div class="card-resort" class="resort" style="background-image: url(<%= image_path resort.photo %>);">
 
        </div>
        <% end %>
@@ -37,7 +37,6 @@
        <div class=" text ">
          <div input type="text" class="location"><%= "#{resort.country}, #{resort.continent} " %> </div>
          <div input type="text" class="name"> <%= link_to resort.name, resort_path(resort) %></div>
-         <!-- <div input type="text" class="price-index"><%="€#{resort.price} per/night" %></div> -->
        </div>
      </div>
      <% end %>
